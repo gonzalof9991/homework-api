@@ -1,0 +1,11 @@
+__pycache__
+app.egg-info
+*.pyc
+
+# Unit test / coverage reports
+.coverage
+htmlcov
+/.env
+/.venv
+
+sql_app.db
