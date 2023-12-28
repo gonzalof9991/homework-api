@@ -8,7 +8,7 @@ class Generic(Base):
     __abstract__ = True
     id = Column(Integer, primary_key=True, index=True)
     status = Column(String, index=True)
-    created_at = Column(String, index=True, default="now()")
+    created_at = Column(String, index=True)
     updated_at = Column(String, index=True)
     deleted_at = Column(String, index=True)
 
@@ -40,7 +40,7 @@ class Task(Generic):
 class Category(Generic):
     __tablename__ = "categories"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
+    name = Column(String, index=True)
     description = Column(String, index=True)
     task_id = Column(Integer, ForeignKey("tasks.id"))
     task = relationship("Task", back_populates="categories")

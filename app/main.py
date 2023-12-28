@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from app.sql_app import models
 from app.sql_app.database import engine
-from app.routers import users, tasks
+from app.routers import users, tasks, categories
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -12,3 +12,4 @@ app = FastAPI()
 
 app.include_router(users.router)
 app.include_router(tasks.router)
+app.include_router(categories.router)
