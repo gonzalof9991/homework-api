@@ -1,25 +1,46 @@
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
+class CategoryBase(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class Category(CategoryBase):
+    id: int
+    task_id: int
+
+    class Config:
+        from_attributes = True
+
+
+class TaskBase(BaseModel):
     title: str
     description: str | None = None
 
 
-class ItemCreate(ItemBase):
+class TaskCreate(TaskBase):
     pass
 
 
-class Item(ItemBase):
+class Task(TaskBase):
     id: int
     owner_id: int
+    categories: list[Category] = []
 
     class Config:
         from_attributes = True
 
 
 class UserBase(BaseModel):
+    first_name: str
+    last_name: str
     email: str
+    username: str
 
 
 class UserCreate(UserBase):
@@ -28,8 +49,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
-    items: list[Item] = []
+    tasks: list[Task] = []
 
     class Config:
         from_attributes = True
