@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -21,6 +23,8 @@ class Category(CategoryBase):
 class TaskBase(BaseModel):
     title: str
     description: str | None = None
+    minutes_expected: int
+    minutes_completed: Optional[int] = None
 
 
 class TaskCreate(TaskBase):

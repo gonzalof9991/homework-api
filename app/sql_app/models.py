@@ -30,6 +30,8 @@ class Task(Generic):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
+    minutes_expected = Column(Integer, index=True)
+    minutes_completed = Column(Integer, index=True, default=0)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="tasks")
     categories = relationship("Category", back_populates="task")
