@@ -1,5 +1,8 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from msilib import Table
+from typing import List
+
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from .database import Base
 
@@ -25,22 +28,29 @@ class User(Generic):
     tasks = relationship("Task", back_populates="owner")
 
 
+association_table = Table(
+    "association",
+    Base.metadata,
+    Column("task_id", Integer, ForeignKey("tasks.id")),
+    Column("category_id", Integer, ForeignKey("categories.id")),
+)
+
+
 class Task(Generic):
     __tablename__ = "tasks"
-    id = Column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="tasks")
-    categories = relationship("Category", back_populates="task")
+    categories: Mapped[List["Category"]] = relationship(secondary=association_table, back_populates="tasks")
 
 
 class Category(Generic):
     __tablename__ = "categories"
-    id = Column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String, index=True)
-    task_id = Column(Integer, ForeignKey("tasks.id"))
-    task = relationship("Task", back_populates="categories")
+    tasks: Mapped[List["Task"]] = relationship(secondary=association_table, back_populates="categories")

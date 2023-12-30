@@ -12,14 +12,6 @@ class CategoryCreate(CategoryBase):
     pass
 
 
-class Category(CategoryBase):
-    id: int
-    task_id: int
-
-    class Config:
-        from_attributes = True
-
-
 class TaskBase(BaseModel):
     title: str
     description: str | None = None
@@ -28,13 +20,22 @@ class TaskBase(BaseModel):
 
 
 class TaskCreate(TaskBase):
+    categories: list[int] = []
     pass
 
 
 class Task(TaskBase):
     id: int
     owner_id: int
-    categories: list[Category] = []
+    categories: list[CategoryBase] = []
+
+    class Config:
+        from_attributes = True
+
+
+class Category(CategoryBase):
+    id: int
+    tasks: list["Task"] = []
 
     class Config:
         from_attributes = True

@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 from ..helpers import get_datetime_now
+from ..services import CategoryService
 
 
 def get_user(db: Session, user_id: int):
@@ -37,7 +38,10 @@ def get_tasks(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
-    db_task = models.Task(**task.dict(), owner_id=user_id)
+    category_service = CategoryService(db, task)
+    db_task = models.Task(**task.dict(exclude={"categories"}), owner_id=user_id)
+    categories = category_service.get_categories_by_ids(task.categories)
+    db_task.categories.extend(categories)
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
@@ -52,6 +56,14 @@ def get_categories(db: Session, skip: int = 0, limit: int = 100):
 
 def create_task_category(db: Session, category: schemas.CategoryCreate, task_id: int):
     db_category = models.Category(**category.dict(), task_id=task_id)
+    db.add(db_category)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+
+def create_category(db: Session, category: schemas.CategoryCreate):
+    db_category = models.Category(**category.dict())
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
