@@ -15,6 +15,8 @@ class CategoryCreate(CategoryBase):
 class TaskBase(BaseModel):
     title: str
     description: str | None = None
+    priority: int = 0  # 0 = low, 1 = medium, 2 = high
+    defeated: int = 0  # 0 = not defeated, 1 = defeated
     minutes_expected: int
     minutes_completed: Optional[int] = None
 

@@ -41,6 +41,8 @@ class Task(Generic):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
+    priority = Column(Integer, index=True, default=0)  # 0 = low, 1 = medium, 2 = high
+    defeated = Column(Integer, index=True, default=0)  # 0 = not defeated, 1 = defeated
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
     owner_id = Column(Integer, ForeignKey("users.id"))
