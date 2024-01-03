@@ -52,6 +52,10 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
     db_task.description = task.description
     db_task.minutes_expected = task.minutes_expected
     db_task.minutes_completed = task.minutes_completed
+    db_task.priority = task.priority
+    db_task.defeated = task.defeated
+    db_task.alert_id = task.alert_id
+    db_task.updated_at = get_datetime_now()
     category_service = CategoryService(db, task)
     categories = category_service.get_categories_by_ids(task.categories)
     db_task.categories.clear()
@@ -129,4 +133,111 @@ def delete_category(db: Session, category_id: int):
     return {
         "status": "success",
         "message": "Category deleted successfully"
+    }
+
+
+# ALERTS
+
+def get_alerts(db: Session, skip: int = 0, limit: int = 100):
+    return (db.query(models.Alert)
+            .filter(models.Alert.deleted_at == None)
+            .offset(skip).limit(limit).all())
+
+
+def get_alert(db: Session, alert_id: int):
+    return db.query(models.Alert).filter(models.Alert.id == alert_id,
+                                         models.Alert.deleted_at == None).first()
+
+
+def create_alert(db: Session, alert: schemas.AlertCreate):
+    print(alert)
+    db_alert = models.Alert(**alert.dict())
+    db.add(db_alert)
+    db.commit()
+    db.refresh(db_alert)
+    return db_alert
+
+
+def update_alert(db: Session, alert_id: int, alert: schemas.AlertCreate):
+    db_alert = db.query(models.Alert).filter(
+        models.Alert.id == alert_id,
+        models.Alert.deleted_at == None
+    ).first()
+    if db_alert is None:
+        return None
+    db_alert.name = alert.name
+    db_alert.description = alert.description
+    db_alert.period = alert.period
+    db_alert.hour = alert.hour
+    db_alert.minute = alert.minute
+    db_alert.type_alert_id = alert.type_alert_id
+    db_alert.updated_at = get_datetime_now()
+    db.commit()
+    db.refresh(db_alert)
+    return db_alert
+
+
+def delete_alert(db: Session, alert_id: int):
+    db_alert = db.query(models.Alert).filter(models.Alert.id == alert_id).first()
+    db_alert.status = "deleted"
+    db_alert.deleted_at = get_datetime_now()
+    db.commit()
+    db.refresh(db_alert)
+    return {
+        "status": "success",
+        "message": "Alert deleted successfully"
+    }
+
+
+def create_alert_by_type_alert(db: Session, alert: schemas.AlertCreate, type_alert_id: int):
+    db_alert = models.Alert(**alert.dict(), type_alert_id=type_alert_id)
+    db.add(db_alert)
+    db.commit()
+    db.refresh(db_alert)
+    return db_alert
+
+
+def create_type_alert(db: Session, type_alert: schemas.TypeAlertCreate):
+    db_type_alert = models.TypeAlert(**type_alert.dict())
+    db.add(db_type_alert)
+    db.commit()
+    db.refresh(db_type_alert)
+    return db_type_alert
+
+
+def get_type_alerts(db: Session, skip: int = 0, limit: int = 100):
+    return (db.query(models.TypeAlert)
+            .filter(models.TypeAlert.deleted_at == None)
+            .offset(skip).limit(limit).all())
+
+
+def get_type_alert(db: Session, type_alert_id: int):
+    return db.query(models.TypeAlert).filter(models.TypeAlert.id == type_alert_id,
+                                             models.TypeAlert.deleted_at == None).first()
+
+
+def update_type_alert(db: Session, type_alert_id: int, type_alert: schemas.TypeAlertCreate):
+    db_type_alert = db.query(models.TypeAlert).filter(
+        models.TypeAlert.id == type_alert_id,
+        models.TypeAlert.deleted_at == None
+    ).first()
+    if db_type_alert is None:
+        return None
+    db_type_alert.name = type_alert.name
+    db_type_alert.description = type_alert.description
+    db_type_alert.updated_at = get_datetime_now()
+    db.commit()
+    db.refresh(db_type_alert)
+    return db_type_alert
+
+
+def delete_type_alert(db: Session, type_alert_id: int):
+    db_type_alert = db.query(models.TypeAlert).filter(models.TypeAlert.id == type_alert_id).first()
+    db_type_alert.status = "deleted"
+    db_type_alert.deleted_at = get_datetime_now()
+    db.commit()
+    db.refresh(db_type_alert)
+    return {
+        "status": "success",
+        "message": "Type Alert deleted successfully"
     }

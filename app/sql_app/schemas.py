@@ -3,45 +3,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class TypeAlertBase(BaseModel):
-    name: str
-    description: str | None = None
-
-
-class TypeAlertCreate(TypeAlertBase):
-    pass
-
-
-class TypeAlert(TypeAlertBase):
-    id: int
-    alerts: list["Alert"] = []
-
-    class Config:
-        from_attributes = True
-
-
-class AlertBase(BaseModel):
-    name: str
-    description: str | None = None
-    period: int
-    hour: int
-    minute: int
-
-
-class AlertCreate(AlertBase):
-    pass
-
-
-class Alert(AlertBase):
-    id: int
-    tasks: list["Task"] = []
-    type_alert_id: int
-    type_alert: TypeAlert
-
-    class Config:
-        from_attributes = True
-
-
 class CategoryBase(BaseModel):
     name: str
     description: str | None = None
@@ -58,6 +19,7 @@ class TaskBase(BaseModel):
     defeated: int = 0  # 0 = not defeated, 1 = defeated
     minutes_expected: int
     minutes_completed: Optional[int] = None
+    alert_id: int
 
 
 class TaskCreate(TaskBase):
@@ -69,7 +31,6 @@ class Task(TaskBase):
     id: int
     owner_id: int
     categories: list[CategoryBase] = []
-    alert_id: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -97,6 +58,47 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     tasks: list[Task] = []
+
+    class Config:
+        from_attributes = True
+
+
+# Alert and TypeAlert
+
+
+class AlertBase(BaseModel):
+    name: str
+    description: str | None = None
+    period: int
+    hour: int
+    minute: int
+    type_alert_id: Optional[int] = None
+
+
+class AlertCreate(AlertBase):
+    pass
+
+
+class Alert(AlertBase):
+    id: int
+    tasks: list["Task"] = []
+
+    class Config:
+        from_attributes = True
+
+
+class TypeAlertBase(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class TypeAlertCreate(TypeAlertBase):
+    pass
+
+
+class TypeAlert(TypeAlertBase):
+    id: int
+    alerts: list["Alert"] = []
 
     class Config:
         from_attributes = True
