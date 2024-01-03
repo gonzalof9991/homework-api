@@ -34,7 +34,43 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def get_tasks(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Task).offset(skip).limit(limit).all()
+    return (db.query(models.Task)
+            .filter(models.Task.deleted_at == None)
+            .offset(skip).limit(limit).all())
+
+
+def get_task(db: Session, task_id: int):
+    return db.query(models.Task).filter(
+        models.Task.id == task_id,
+        models.Task.deleted_at == None
+    ).first()
+
+
+def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    db_task.title = task.title
+    db_task.description = task.description
+    db_task.minutes_expected = task.minutes_expected
+    db_task.minutes_completed = task.minutes_completed
+    category_service = CategoryService(db, task)
+    categories = category_service.get_categories_by_ids(task.categories)
+    db_task.categories.clear()
+    db_task.categories.extend(categories)
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+
+def delete_task(db: Session, task_id: int):
+    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    db_task.status = "deleted"
+    db_task.deleted_at = get_datetime_now()
+    db.commit()
+    db.refresh(db_task)
+    return {
+        "status": "success",
+        "message": "Task deleted successfully"
+    }
 
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
