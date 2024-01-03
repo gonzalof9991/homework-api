@@ -1,7 +1,7 @@
 from http.client import HTTPException
 
 from fastapi import APIRouter, Depends
-
+from fastapi.encoders import jsonable_encoder
 from app.sql_app import schemas, crud
 from app.sql_app.dependencies import get_db
 from sqlalchemy.orm import Session
@@ -9,11 +9,11 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.post("/tasks/{task_id}/categories/", response_model=schemas.Category)
-def create_category_for_task(
-        task_id: int, category: schemas.CategoryCreate, db: Session = Depends(get_db)
+@router.post("/category/", response_model=schemas.Category)
+def create_category(
+        category: schemas.CategoryCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_task_category(db=db, category=category, task_id=task_id)
+    return crud.create_category(db=db, category=category)
 
 
 @router.get("/category/", response_model=list[schemas.Category])
