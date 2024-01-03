@@ -3,6 +3,45 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class TypeAlertBase(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class TypeAlertCreate(TypeAlertBase):
+    pass
+
+
+class TypeAlert(TypeAlertBase):
+    id: int
+    alerts: list["Alert"] = []
+
+    class Config:
+        from_attributes = True
+
+
+class AlertBase(BaseModel):
+    name: str
+    description: str | None = None
+    period: int
+    hour: int
+    minute: int
+
+
+class AlertCreate(AlertBase):
+    pass
+
+
+class Alert(AlertBase):
+    id: int
+    tasks: list["Task"] = []
+    type_alert_id: int
+    type_alert: TypeAlert
+
+    class Config:
+        from_attributes = True
+
+
 class CategoryBase(BaseModel):
     name: str
     description: str | None = None
@@ -30,6 +69,7 @@ class Task(TaskBase):
     id: int
     owner_id: int
     categories: list[CategoryBase] = []
+    alert_id: Optional[int] = None
 
     class Config:
         from_attributes = True
