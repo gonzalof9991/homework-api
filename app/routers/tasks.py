@@ -1,6 +1,4 @@
-from http.client import HTTPException
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.sql_app import schemas, crud
 from app.sql_app.dependencies import get_db
