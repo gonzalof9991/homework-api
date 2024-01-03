@@ -48,6 +48,8 @@ class Task(Generic):
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="tasks")
     categories: Mapped[List["Category"]] = relationship(secondary=association_table, back_populates="tasks")
+    alert_id = Column(Integer, ForeignKey("alerts.id"))
+    alert = relationship("Alert", back_populates="tasks")
 
 
 class Category(Generic):
@@ -56,3 +58,24 @@ class Category(Generic):
     name = Column(String, index=True)
     description = Column(String, index=True)
     tasks: Mapped[List["Task"]] = relationship(secondary=association_table, back_populates="categories")
+
+
+class Alert(Generic):
+    __tablename__ = "alerts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(String, index=True)
+    period = Column(Integer, index=True)  # 0 = daily, 1 = weekly, 2 = monthly
+    hour = Column(Integer, index=True)  # 0-23
+    minute = Column(Integer, index=True)  # 0-59
+    tasks: Mapped[List["Task"]] = relationship("Task", back_populates="alert")
+    type_alert_id = Column(Integer, ForeignKey("type_alerts.id"))
+    type_alert = relationship("TypeAlert", back_populates="alerts")
+
+
+class TypeAlert(Generic):
+    __tablename__ = "type_alerts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(String, index=True)
+    alerts: Mapped[List["Alert"]] = relationship("Alert", back_populates="type_alert")
