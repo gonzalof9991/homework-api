@@ -45,6 +45,7 @@ class Task(Generic):
     defeated = Column(Integer, index=True, default=0)  # 0 = not defeated, 1 = defeated
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
+    expiration_date = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="tasks")
     categories: Mapped[List["Category"]] = relationship(secondary=association_table, back_populates="tasks")
