@@ -51,9 +51,10 @@ def delete_task(db: Session, task_id: int):
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     category_service = CategoryService(db, task)
-    db_task = models.Task(**task.dict(exclude={"categories"}), owner_id=user_id)
+    db_task = models.Task(**task.dict(exclude={"categories", "created_at"}), owner_id=user_id)
     categories = category_service.get_categories_by_ids(task.categories)
     db_task.categories.extend(categories)
+    db_task.created_at = get_datetime_now()
     db.add(db_task)
     db.commit()
     db.refresh(db_task)

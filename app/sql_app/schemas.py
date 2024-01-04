@@ -20,6 +20,7 @@ class TaskBase(BaseModel):
     minutes_expected: int
     minutes_completed: Optional[int] = None
     alert_id: int
+    expiration_date: str | None = None
 
 
 class TaskCreate(TaskBase):
