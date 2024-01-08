@@ -1,0 +1,30 @@
+name: Task List CI/CD
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: SonarCloud Scan
+        uses: kitibisa/sonarcloud-action@v1.2.0
+        with:
+          host: ${{ secrets.SONARQUBE_HOST  }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}
+
+      - name: Run tests
+        run: |
+          echo "Running tests"
