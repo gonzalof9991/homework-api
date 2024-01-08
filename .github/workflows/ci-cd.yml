@@ -20,7 +20,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: SonarCloud Scan
-        uses: kitibisa/sonarcloud-action@v1.2.0
+        uses: kitabisa/sonarqube-action@v1.2.0
         with:
           host: ${{ secrets.SONARQUBE_HOST  }}
           login: ${{ secrets.SONARQUBE_TOKEN }}
