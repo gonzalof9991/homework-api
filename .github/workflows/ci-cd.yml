@@ -21,7 +21,7 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m python --version
+          python --version
 
 
   sonarcloud:
