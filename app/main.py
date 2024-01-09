@@ -13,8 +13,14 @@ app = FastAPI()
 app.include_router(users.router)
 app.include_router(tasks.router)
 app.include_router(categories.router)
-# app.include_router(alerts.router)
-# app.include_router(types_alerts.router)
+app.include_router(alerts.router)
+app.include_router(types_alerts.router)
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
 
 # Define Cron Jobs
 scheduler.start()
