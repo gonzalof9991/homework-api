@@ -51,7 +51,7 @@ def delete_task(db: Session, task_id: int):
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     category_service = CategoryService(db, task)
-    db_task = models.Task(**task.dict(exclude={"categories", "created_at"}), owner_id=user_id)
+    db_task = models.Task(**task.model_dump(exclude={"categories", "created_at"}), owner_id=user_id)
     categories = category_service.get_categories_by_ids(task.categories)
     db_task.categories.extend(categories)
     db_task.created_at = get_datetime_now()
@@ -61,10 +61,7 @@ def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     return db_task
 
 
-def get_categories(db: Session, skip: int = 0, limit: int = 100):
-    return (db.query(models.Category)
-            .filter(models.Category.deleted_at == None)
-            .offset(skip).limit(limit).all())
+
 
 
 def create_task_category(db: Session, category: schemas.CategoryCreate, task_id: int):

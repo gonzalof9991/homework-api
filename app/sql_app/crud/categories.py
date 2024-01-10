@@ -17,6 +17,12 @@ def get_category(db: Session, category_id: int):
                                             models.Category.deleted_at == None).first()
 
 
+def get_categories(db: Session, skip: int = 0, limit: int = 100):
+    return (db.query(models.Category)
+            .filter(models.Category.deleted_at == None)
+            .offset(skip).limit(limit).all())
+
+
 def update_category(db: Session, category_id: int, category: schemas.Category):
     db_category = db.query(models.Category).filter(models.Category.id == category_id).first()
     db_category.name = category.name

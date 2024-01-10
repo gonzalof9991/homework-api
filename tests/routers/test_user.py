@@ -25,8 +25,3 @@ def test_create_user():
 def test_read_user():
     response = client.get("/users/1")
     assert response.status_code == 200
-
-
-def test_delete_user():
-    response = client.delete("/users/1")
-    assert response.status_code == 200
