@@ -1,4 +1,3 @@
-from msilib import Table
 from typing import List
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Table

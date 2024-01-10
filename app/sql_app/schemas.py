@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CategoryBase(BaseModel):
@@ -33,16 +33,14 @@ class Task(TaskBase):
     owner_id: int
     categories: list[CategoryBase] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Category(CategoryBase):
     id: int
     tasks: list["Task"] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserBase(BaseModel):
@@ -60,8 +58,7 @@ class User(UserBase):
     id: int
     tasks: list[Task] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Alert and TypeAlert
@@ -83,9 +80,7 @@ class AlertCreate(AlertBase):
 class Alert(AlertBase):
     id: int
     tasks: list["Task"] = []
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TypeAlertBase(BaseModel):
@@ -100,6 +95,4 @@ class TypeAlertCreate(TypeAlertBase):
 class TypeAlert(TypeAlertBase):
     id: int
     alerts: list["Alert"] = []
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
