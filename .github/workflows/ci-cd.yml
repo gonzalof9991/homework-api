@@ -21,7 +21,9 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest
+          coverage run -m pytest |
+          coverage report -m |
+          coverage xml
 
 
   sonarcloud:
