@@ -6,18 +6,18 @@ from app.jobs.task_cron import scheduler
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+api = FastAPI()
 
 # Implementing the APIRouter
 
-app.include_router(users.router)
-app.include_router(tasks.router)
-app.include_router(categories.router)
-app.include_router(alerts.router)
-app.include_router(types_alerts.router)
+api.include_router(users.router)
+api.include_router(tasks.router)
+api.include_router(categories.router)
+api.include_router(alerts.router)
+api.include_router(types_alerts.router)
 
 
-@app.get("/")
+@api.get("/")
 def read_root():
     return {"Hello": "World"}
 
