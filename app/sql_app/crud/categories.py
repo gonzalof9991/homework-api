@@ -5,7 +5,8 @@ from app.sql_app import models, schemas
 
 
 def create_category(db: Session, category: schemas.CategoryCreate):
-    db_category = models.Category(**category.dict())
+    db_category = models.Category(**category.model_dump(exclude={"created_at"}))
+    db_category.created_at = get_datetime_now()
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
