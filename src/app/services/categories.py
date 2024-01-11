@@ -1,8 +1,6 @@
-from app.sql_app import schemas
+from src.app.sql_app import schemas
 from sqlalchemy.orm import Session
-from typing import Type
-from app.sql_app.schemas import Category
-from app.sql_app.models import Category
+from src.app.sql_app.models import Category
 
 
 class CategoryService:

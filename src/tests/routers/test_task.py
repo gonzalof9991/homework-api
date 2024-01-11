@@ -1,4 +1,4 @@
-from tests.test_main import client
+from src.tests.test_main import client
 
 
 def test_read_tasks():

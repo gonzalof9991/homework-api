@@ -1,4 +1,4 @@
-from app.sql_app.database import SessionLocal
+from src.app.sql_app.database import SessionLocal
 
 
 # Dependencia para usar en las rutas.

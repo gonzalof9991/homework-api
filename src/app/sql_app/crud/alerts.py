@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from app.helpers import get_datetime_now
-from app.sql_app import models, schemas
+from src.app.helpers import get_datetime_now
+from src.app.sql_app import models, schemas
 
 
 def get_alerts(db: Session, skip: int = 0, limit: int = 100):
