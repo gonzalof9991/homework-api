@@ -1,0 +1,7 @@
+[coverage:run]
+relative_files = True
+source = src/
+branch = True
+include =
+    src/*
+    tests/*

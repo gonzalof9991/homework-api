@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.sql_app import schemas
-from app.sql_app.dependencies import get_db
+from src.app.sql_app import schemas
+from src.app.sql_app.dependencies import get_db
 from sqlalchemy.orm import Session
-from app.sql_app.crud import categories as crud
+from src.app.sql_app.crud import categories as crud
 
 router = APIRouter()
 
@@ -14,7 +14,7 @@ def create_category(
     return crud.create_category(db=db, category=category)
 
 
-@router.get("/category/", response_model=list[schemas.Category])
+@router.get("/categories/", response_model=list[schemas.Category])
 def read_category(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     category = crud.get_categories(db, skip=skip, limit=limit)
     return category

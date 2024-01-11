@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from app.helpers import get_datetime_now
-from app.services import CategoryService
-from app.sql_app import models, schemas
+from src.app.helpers import get_datetime_now
+from src.app.services import CategoryService
+from src.app.sql_app import models, schemas
 
 
 def get_tasks(db: Session, skip: int = 0, limit: int = 100):
@@ -59,9 +59,6 @@ def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     db.commit()
     db.refresh(db_task)
     return db_task
-
-
-
 
 
 def create_task_category(db: Session, category: schemas.CategoryCreate, task_id: int):

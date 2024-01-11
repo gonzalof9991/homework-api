@@ -1,9 +1,9 @@
 from typing import List
-from app.sql_app.crud import tasks as crud
+from src.app.sql_app.crud import tasks as crud
 from apscheduler.schedulers.background import BackgroundScheduler
-from app.sql_app.database import SessionLocal
-from app.sql_app.models import Task
-from app.helpers.date import compare_max_date
+from src.app.sql_app.database import SessionLocal
+from src.app.sql_app.models import Task
+from src.app.helpers.date import compare_max_date
 
 db = SessionLocal()
 
