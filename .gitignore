@@ -7,5 +7,3 @@ app.egg-info
 htmlcov
 /.env
 /.venv
-
-sql_app.db
