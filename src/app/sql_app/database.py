@@ -6,6 +6,7 @@ from src.app.core.config import get_url_database
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 SQLALCHEMY_DATABASE_URL = get_url_database()
+print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
 )
