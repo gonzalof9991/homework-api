@@ -1,0 +1,5 @@
+[tool.poetry]
+name = "Homework API"
+version = "0.1.0"
+description = "A simple API homework app"
+authors = ["Gonzalo Falfán Rojas"]

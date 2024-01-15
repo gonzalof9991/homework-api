@@ -34,3 +34,5 @@ tzlocal     ===      2.1
 uvicorn     ===      0.25.0
 watchfiles   ===     0.21.0
 websockets   ===     12.0
+psycopg2       ===   2.9.9
+
