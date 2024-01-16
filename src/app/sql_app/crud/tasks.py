@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from src.app.helpers import get_datetime_now
 from src.app.services import CategoryService
 from src.app.sql_app import models, schemas
+from src.app.sql_app.models import Task
 
 
 def get_tasks(db: Session, skip: int = 0, limit: int = 100):
@@ -19,7 +20,10 @@ def get_task(db: Session, task_id: int):
 
 
 def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
-    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
+    db_task: Task | None = db.query(models.Task).filter(models.Task.id == task_id).first()
+    if db_task is None:
+        return None
+
     db_task.title = task.title
     db_task.description = task.description
     db_task.minutes_expected = task.minutes_expected

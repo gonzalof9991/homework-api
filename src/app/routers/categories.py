@@ -1,8 +1,11 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from src.app.sql_app import schemas
 from src.app.sql_app.dependencies import get_db
 from sqlalchemy.orm import Session
 from src.app.sql_app.crud import categories as crud
+from src.app.sql_app.models import Category
 
 router = APIRouter()
 
@@ -14,10 +17,11 @@ def create_category(
     return crud.create_category(db=db, category=category)
 
 
-@router.get("/categories/", response_model=list[schemas.Category])
-def read_category(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    category = crud.get_categories(db, skip=skip, limit=limit)
-    return category
+@router.get("/categories/", response_model=list[schemas.CategoryByNameId])
+def read_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    categories: List[Category] = crud.get_categories(db, skip=skip, limit=limit)
+    names_ids = [{"name": category.name, "id": category.id} for category in categories]
+    return names_ids
 
 
 @router.get("/category/{category_id}", response_model=schemas.Category)

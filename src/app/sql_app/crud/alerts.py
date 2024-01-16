@@ -56,7 +56,7 @@ def delete_alert(db: Session, alert_id: int):
 
 
 def create_alert_by_type_alert(db: Session, alert: schemas.AlertCreate, type_alert_id: int):
-    db_alert = models.Alert(**alert.dict(), type_alert_id=type_alert_id)
+    db_alert = models.Alert(**alert.model_dump(exclude={"type_alert_id"}), type_alert_id=type_alert_id)
     db.add(db_alert)
     db.commit()
     db.refresh(db_alert)
