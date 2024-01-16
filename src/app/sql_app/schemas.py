@@ -43,6 +43,12 @@ class Category(CategoryBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class CategoryByNameId(CategoryBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class UserBase(BaseModel):
     first_name: str
     last_name: str
