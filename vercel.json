@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "name": "fastapi",
+  "devCommand": "uvicorn src.app.main:api --reload --host 0.0.0.0 --port 3000",
   "builds": [
     {
       "src": "src/app/main.py",
