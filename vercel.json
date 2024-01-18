@@ -11,7 +11,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/src/app/main.py"
+      "dest": "src/app/main.py"
     }
   ],
   "env": {
