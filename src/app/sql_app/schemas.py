@@ -17,6 +17,7 @@ class TaskBase(BaseModel):
     description: str | None = None
     priority: int = 0  # 0 = low, 1 = medium, 2 = high
     defeated: int = 0  # 0 = not defeated, 1 = defeated
+    type: int = 0
     minutes_expected: int
     minutes_completed: Optional[int] = None
     alert_id: int
