@@ -42,6 +42,7 @@ class Task(Generic):
     description = Column(String, index=True)
     priority = Column(Integer, index=True, default=0)  # 0 = low, 1 = medium, 2 = high
     defeated = Column(Integer, index=True, default=0)  # 0 = not defeated, 1 = defeated
+    type = Column(Integer, index=True, default=0)  # 0 = new, 1 = active , 2 = closed
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
     expiration_date = Column(String, index=True)
