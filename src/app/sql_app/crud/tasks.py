@@ -30,6 +30,7 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
     db_task.minutes_completed = task.minutes_completed
     db_task.priority = task.priority
     db_task.defeated = task.defeated
+    db_task.type = task.type
     db_task.alert_id = task.alert_id
     db_task.updated_at = get_datetime_now()
     category_service = CategoryService(db, task)

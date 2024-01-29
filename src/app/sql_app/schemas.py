@@ -32,7 +32,7 @@ class TaskCreate(TaskBase):
 class Task(TaskBase):
     id: int
     owner_id: int
-    categories: list[CategoryBase] = []
+    categories: list["CategoryByNameId"] = []
 
     model_config = ConfigDict(from_attributes=True)
 
