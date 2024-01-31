@@ -9,7 +9,7 @@ def test_read_tasks():
 
 def test_create_task():
     response = client.post(
-        "/users/1/tasks/",
+        "/histories/1/tasks/",
         headers={"Content-Type": "application/json"},
         json={
             "title": "Caminar v5",

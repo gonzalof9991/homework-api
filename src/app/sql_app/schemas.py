@@ -31,7 +31,7 @@ class TaskCreate(TaskBase):
 
 class Task(TaskBase):
     id: int
-    owner_id: int
+    history_id: int
     categories: list["CategoryByNameId"] = []
 
     model_config = ConfigDict(from_attributes=True)
@@ -50,6 +50,27 @@ class CategoryByNameId(CategoryBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class HistoryBase(BaseModel):
+    title: str
+    description: str | None = None
+
+
+class HistoryCreate(HistoryBase):
+    pass
+
+
+class HistoryUpdate(HistoryBase):
+    tasks: list[int] = []
+    owner_id: Optional[int] = None
+
+
+class History(HistoryBase):
+    id: int
+    tasks: list["Task"] = []
+    owner_id: Optional[int] = None
+    model_config = ConfigDict(from_attributes=True)
+
+
 class UserBase(BaseModel):
     first_name: str
     last_name: str
@@ -64,7 +85,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     tasks: list[Task] = []
-
+    histories: list["History"] = []
     model_config = ConfigDict(from_attributes=True)
 
 

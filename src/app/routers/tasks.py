@@ -8,11 +8,11 @@ from src.app.sql_app.crud import tasks as crud
 router = APIRouter()
 
 
-@router.post("/users/{user_id}/tasks/", response_model=schemas.Task)
-def create_item_for_user(
-        user_id: int, task: schemas.TaskCreate, db: Session = Depends(get_db)
+@router.post("/histories/{history_id}/tasks/", response_model=schemas.Task)
+def create_item_for_history(
+        history_id: int, task: schemas.TaskCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_task(db=db, task=task, user_id=user_id)
+    return crud.create_history_task(db=db, task=task, history_id=history_id)
 
 
 @router.get("/tasks/", response_model=list[schemas.Task])
