@@ -54,9 +54,9 @@ def delete_task(db: Session, task_id: int):
     }
 
 
-def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
+def create_history_task(db: Session, task: schemas.TaskCreate, history_id: int):
     category_service = CategoryService(db, task)
-    db_task = models.Task(**task.model_dump(exclude={"categories", "created_at"}), owner_id=user_id)
+    db_task = models.Task(**task.model_dump(exclude={"categories", "created_at"}), history_id=history_id)
     categories = category_service.get_categories_by_ids(task.categories)
     db_task.categories.extend(categories)
     db_task.created_at = get_datetime_now()
