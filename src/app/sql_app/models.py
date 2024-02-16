@@ -58,6 +58,9 @@ class Task(Generic):
     alert_id = Column(Integer, ForeignKey("alerts.id"))
     alert = relationship("Alert", back_populates="tasks")
 
+    def __repr__(self):
+        return f"Task({self.title})"
+
 
 class Category(Generic):
     __tablename__ = "categories"

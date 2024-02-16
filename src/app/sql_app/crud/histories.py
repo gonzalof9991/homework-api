@@ -15,14 +15,20 @@ def create_history_by_user(db: Session, history: schemas.HistoryCreate, owner_id
 
 
 def get_history(db: Session, history_id: int):
-    return db.query(models.History).filter(models.History.id == history_id,
-                                           models.History.deleted_at == None).first()
+    history = db.query(models.History).filter(models.History.id == history_id,
+                                              models.History.deleted_at == None).first()
+    filter_tasks = [task for task in history.tasks if task.deleted_at is None]
+    history.tasks = filter_tasks
+    return history
 
 
 def get_histories(db: Session, skip: int = 0, limit: int = 100):
-    return (db.query(models.History)
-            .filter(models.History.deleted_at == None)
-            .offset(skip).limit(limit).all())
+    histories = db.query(models.History).filter(models.History.deleted_at == None).offset(skip).limit(limit).all()
+    for history in histories:
+        filter_tasks = [task for task in history.tasks if task.deleted_at is None]
+        history.tasks = filter_tasks
+
+    return histories
 
 
 def update_history(db: Session, history_id: int, history: schemas.HistoryUpdate):

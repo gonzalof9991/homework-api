@@ -43,9 +43,13 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
 
 
 def delete_task(db: Session, task_id: int):
-    db_task = db.query(models.Task).filter(models.Task.id == task_id).first()
-    db_task.status = "deleted"
+    db_task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.deleted_at == None).first()
+    if db_task is None:
+        return None
+
+    db_task.status = 2
     db_task.deleted_at = get_datetime_now()
+    print(db_task.deleted_at)
     db.commit()
     db.refresh(db_task)
     return {
