@@ -29,6 +29,7 @@ class History(Generic):
     __tablename__ = "histories"
     title = Column(String, index=True)
     description = Column(String, index=True)
+    added_minutes = Column(Integer, index=True, default=0)
     tasks = relationship("Task", back_populates="history")
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="histories")
@@ -49,6 +50,10 @@ class Task(Generic):
     priority = Column(Integer, index=True, default=0)  # 0 = low, 1 = medium, 2 = high
     defeated = Column(Integer, index=True, default=0)  # 0 = not defeated, 1 = defeated
     type = Column(Integer, index=True, default=0)  # 0 = new, 1 = active , 2 = closed
+    repeat = Column(Integer, index=True,
+                    default=0)  # 0 = no repeat, 1 = repeat every day, 2 = repeat every week, 3 = repeat every month
+    repeated_date = Column(String, index=True)
+    repeated_days = Column(Integer, index=True)
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
     expiration_date = Column(String, index=True)

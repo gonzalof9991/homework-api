@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from src.app.helpers import get_datetime_now
+from src.app.helpers import get_datetime_now, compare_max_date
 from src.app.services import CategoryService
 from src.app.sql_app import models, schemas
 from src.app.sql_app.models import Task
@@ -31,6 +31,16 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
     db_task.priority = task.priority
     db_task.defeated = task.defeated
     db_task.type = task.type
+    db_task.repeat = task.repeat
+    db_task.repeated_date = task.repeated_date
+    db_task.repeated_days = task.repeated_days
+    # validate date expiration
+    if compare_max_date(task.expiration_date):
+        db_task.defeated = 1
+
+    # if type = 2, then is defeated is 0
+    if task.type == 2:
+        db_task.defeated = 0
     db_task.alert_id = task.alert_id
     db_task.updated_at = get_datetime_now()
     category_service = CategoryService(db, task)

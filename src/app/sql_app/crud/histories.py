@@ -36,6 +36,7 @@ def update_history(db: Session, history_id: int, history: schemas.HistoryUpdate)
     db_history.title = history.title
     db_history.description = history.description
     db_history.owner_id = history.owner_id
+    db_history.added_minutes = history.added_minutes
     # taskService
     task_service = TaskService(db=db)
     # get tasks by ids

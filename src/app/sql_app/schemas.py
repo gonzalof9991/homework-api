@@ -17,11 +17,14 @@ class TaskBase(BaseModel):
     description: str | None = None
     priority: int = 0  # 0 = low, 1 = medium, 2 = high
     defeated: int = 0  # 0 = not defeated, 1 = defeated
+    repeat: int | None = None  # 0 = no repeat, 1 = repeat every day, 2 = repeat every week, 3 = repeat every month
+    repeated_days: int | None = None
     type: int = 0
     minutes_expected: int
     minutes_completed: Optional[int] = None
     alert_id: int
     expiration_date: str | None = None
+    repeated_date: str | None = None
     deleted_at: str | None = None
     updated_at: str | None = None
     created_at: str | None = None
@@ -49,13 +52,13 @@ class Category(CategoryBase):
 
 class CategoryByNameId(CategoryBase):
     id: int
-
     model_config = ConfigDict(from_attributes=True)
 
 
 class HistoryBase(BaseModel):
     title: str
     description: str | None = None
+    added_minutes: int | None = None
 
 
 class HistoryCreate(HistoryBase):
