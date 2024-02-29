@@ -27,6 +27,8 @@ api.include_router(alerts.router)
 api.include_router(types_alerts.router)
 api.include_router(histories.router)
 
+# Implementing services to update tasks to every day
+
 
 @api.get("/")
 def read_root():
