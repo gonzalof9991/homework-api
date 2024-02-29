@@ -9,12 +9,16 @@ db = SessionLocal()
 
 
 def verify_task_defeated():
-    tasks_defeated: List[Task] = [task for task in crud.get_tasks(db) if
-                                  compare_max_date(task.expiration_date) and task.defeated != 1]
+    tasks_defeated: List[Task] = [
+        task for task in crud.get_tasks(db) if
+        compare_max_date(task.expiration_date)
+        and task.defeated != 1
+        and task.type != 2
+    ]
     for task in tasks_defeated:
         task.defeated = 1
-        print(task.title)
-        print("Send email")
+        # send email
+        # notify by
         db.add(task)
 
     db.commit()
