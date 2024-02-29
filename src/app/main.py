@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
+from src.app.services.tasks import TaskService
 from src.app.sql_app import models
-from src.app.sql_app.database import engine
+from src.app.sql_app.database import engine, SessionLocal
 from src.app.routers import users, tasks, categories, alerts, types_alerts, histories
 from src.app.jobs.task_cron import scheduler
 
@@ -26,8 +27,6 @@ api.include_router(categories.router)
 api.include_router(alerts.router)
 api.include_router(types_alerts.router)
 api.include_router(histories.router)
-
-# Implementing services to update tasks to every day
 
 
 @api.get("/")
