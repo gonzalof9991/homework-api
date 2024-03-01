@@ -25,8 +25,9 @@ def read_histories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
     # Update added minutes to history
     for history in histories:
         added_minutes = 0
-        for task in history.tasks:
-            added_minutes += task.minutes_expected
+        tasks = [task for task in history.tasks if task.repeated_date != None]
+        for task in tasks:
+            added_minutes += task.minutes_expected * task.repeated_days
         history.added_minutes = added_minutes
     return histories
 

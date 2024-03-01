@@ -56,6 +56,7 @@ class Task(Generic):
     repeated_days = Column(Integer, index=True)
     minutes_expected = Column(Integer, index=True)
     minutes_completed = Column(Integer, index=True, default=0)
+    minutes_total = Column(Integer, index=True, default=0)
     expiration_date = Column(String, index=True)
     history_id = Column(Integer, ForeignKey("histories.id"))
     history = relationship("History", back_populates="tasks")

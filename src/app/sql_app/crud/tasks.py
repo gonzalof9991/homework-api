@@ -28,12 +28,16 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
     db_task.description = task.description
     db_task.minutes_expected = task.minutes_expected
     db_task.minutes_completed = task.minutes_completed
+    if task.minutes_total:
+        db_task.minutes_total = task.minutes_total
     db_task.priority = task.priority
     db_task.defeated = task.defeated
     db_task.type = task.type
     db_task.repeat = task.repeat
-    db_task.repeated_date = task.repeated_date
-    db_task.repeated_days = task.repeated_days
+    if task.repeated_date:
+        db_task.repeated_date = task.repeated_date
+    if task.repeated_days:
+        db_task.repeated_days = task.repeated_days
     # validate date expiration
     if compare_max_date(task.expiration_date):
         db_task.defeated = 1

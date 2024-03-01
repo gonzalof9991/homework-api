@@ -17,13 +17,17 @@ class TaskService:
     def update_tasks_to_repeat_type(self, repeat: int):
         now = get_datetime_now()
         tasks = self.db.query(Task).filter(
-            Task.deleted_at is None,
-            Task.repeat is repeat,
-            Task.repeated_date is not now
-        ).all()
+            Task.deleted_at == None,
+            Task.repeat == repeat,
+            Task.repeated_date == None
+        ).all() or []
+        # New filter to get tasks that are not repeated yet or the repeated date is different from today
+        tasks = list(filter(lambda task: task.repeated_date is None or task.repeated_date != now, tasks))
         # If there are no tasks to update, return
         if len(tasks) == 0:
+            print("No tasks to update")
             return
+
         # Update tasks
         for task in tasks:
             task.type = 0  # reset task type -> New
@@ -33,6 +37,8 @@ class TaskService:
                 task.repeated_days = 1
             else:
                 task.repeated_days = task.repeated_days + 1
+
+            task.minutes_total = task.minutes_expected * task.repeated_days
             self.db.add(task)
             self.db.commit()
             self.db.refresh(task)
