@@ -34,6 +34,9 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
     db_task.defeated = task.defeated
     db_task.type = task.type
     db_task.repeat = task.repeat
+    db_task.expiration_date = task.expiration_date
+    print(task.expiration_date, "expiration_date - request")
+    print(db_task.expiration_date, "expiration_date - db")
     if task.repeated_date:
         db_task.repeated_date = task.repeated_date
     if task.repeated_days:
