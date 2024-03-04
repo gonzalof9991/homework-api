@@ -16,10 +16,11 @@ class TaskService:
 
     def update_tasks_to_repeat_type(self, repeat: int):
         now = get_datetime_now()
+        # now = "2024-02-05"
         tasks = self.db.query(Task).filter(
-            Task.deleted_at == None,
+            Task.deleted_at == None,  # If the task is not deleted
             Task.repeat == repeat,
-            Task.repeated_date == None
+            Task.type == 2  # Task type = 2 -> Closed
         ).all() or []
         # New filter to get tasks that are not repeated yet or the repeated date is different from today
         tasks = list(filter(lambda task: task.repeated_date is None or task.repeated_date != now, tasks))
