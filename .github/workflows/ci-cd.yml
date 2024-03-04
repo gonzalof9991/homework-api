@@ -60,7 +60,6 @@ jobs:
     needs: [ build, sonarcloud ]
     steps:
       - name: Deploy to Render
-        uses: actions/setup-node@v2
         run: |
           curl post https://api.render.com/deploy/srv-cmlc22gcmk4c73dpns60?key=TCbNxwoDEjY
 
