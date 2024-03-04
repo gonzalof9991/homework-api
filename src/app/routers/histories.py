@@ -18,18 +18,23 @@ def create_history(
 
 @router.get("/histories/", response_model=list[schemas.History])
 def read_histories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    # TODO: Refactor this to a service
-    task_service = TaskService(db)
-    task_service.update_tasks_to_repeat_type(1)
-    histories = crud.get_histories(db, skip=skip, limit=limit)
-    # Update added minutes to history
-    for history in histories:
-        added_minutes = 0
-        tasks = [task for task in history.tasks if task.repeated_date != None]
-        for task in tasks:
-            added_minutes += task.minutes_expected * task.repeated_days
-        history.added_minutes = added_minutes
-    return histories
+    try:
+
+        # TODO: Refactor this to a service
+        task_service = TaskService(db)
+        task_service.update_tasks_to_repeat_type(1)
+        histories = crud.get_histories(db, skip=skip, limit=limit)
+        # Update added minutes to history
+        for history in histories:
+            added_minutes = 0
+            tasks = [task for task in history.tasks if task.repeated_date != None]
+            for task in tasks:
+                added_minutes += task.minutes_expected * task.repeated_days
+            history.added_minutes = added_minutes
+        return histories
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Histories not found")
 
 
 @router.get("/history/{history_id}", response_model=schemas.History)
