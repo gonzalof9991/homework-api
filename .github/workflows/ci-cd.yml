@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -51,9 +52,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -61,7 +59,8 @@ jobs:
     steps:
       - name: Deploy to Render
         run: |
-          curl post https://api.render.com/deploy/srv-cmlc22gcmk4c73dpns60?key=TCbNxwoDEjY
+          echo ${{ secrets.RENDER_SERVICE_ID }}
+          curl post https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}
 
 
 
