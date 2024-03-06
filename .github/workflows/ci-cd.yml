@@ -59,7 +59,6 @@ jobs:
     steps:
       - name: Deploy to Render
         run: |
-          echo ${{ secrets.RENDER_SERVICE_ID }}
           curl post https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}
 
 
