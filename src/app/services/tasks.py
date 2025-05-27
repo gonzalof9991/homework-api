@@ -15,6 +15,7 @@ class TaskService:
         ).all()
 
     def update_tasks_to_repeat_type(self, repeat: int):
+        # TODO: Validar si la tarea fue creada en el día de hoy, si es asi, no se debe actualizar
         now = get_datetime_now()
         # now = "2024-02-05"
         tasks = self.db.query(Task).filter(
